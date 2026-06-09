@@ -10,108 +10,62 @@
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0d0d12;
-      --surface: #16161f;
-      --surface2: #1e1e2a;
-      --border: #2a2a3a;
-      --accent: #c084fc;
-      --accent2: #818cf8;
-      --text: #e8e8f0;
-      --muted: #6b6b80;
+      --bg: #0d0d12; --surface: #16161f; --surface2: #1e1e2a;
+      --border: #2a2a3a; --accent: #c084fc; --accent2: #818cf8;
+      --text: #e8e8f0; --muted: #6b6b80;
     }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+      min-height: 100vh; display: flex; flex-direction: column;
     }
-
-    /* HEADER */
     header {
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-shrink: 0;
+      padding: 1rem 1.5rem; display: flex; align-items: center;
+      justify-content: space-between; border-bottom: 1px solid var(--border);
+      background: var(--surface); flex-shrink: 0;
     }
     .logo {
-      font-family: 'DM Serif Display', serif;
-      font-style: italic;
-      font-size: 1.4rem;
+      font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.4rem;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    #status-bar {
-      font-size: 0.78rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    #status-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--muted);
-      transition: background 0.4s;
-    }
+    #status-bar { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.5rem; }
+    #status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: background 0.4s; }
     #status-dot.connected { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
     #status-dot.calling   { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
     /* SETUP */
     #setup {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      gap: 2rem;
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 2rem; gap: 1.5rem;
     }
     .setup-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 460px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; width: 100%; max-width: 480px;
+      display: flex; flex-direction: column; gap: 1.2rem;
     }
-    .setup-card h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; }
-    .setup-card p  { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+    .setup-card h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; }
+    .setup-card p  { color: var(--muted); font-size: 0.86rem; line-height: 1.6; }
     .role-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
     .role-btn {
-      padding: 1rem; border-radius: 12px;
-      border: 1px solid var(--border); background: var(--surface2);
-      color: var(--text); cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-      transition: all 0.2s; text-align: center;
+      padding: 1rem; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface2); color: var(--text); cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; transition: all 0.2s; text-align: center;
     }
     .role-btn:hover { border-color: var(--accent); color: var(--accent); }
     .role-btn .role-icon  { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
     .role-btn .role-label { font-weight: 500; display: block; }
     .role-btn .role-sub   { font-size: 0.75rem; color: var(--muted); }
 
-    input[type="text"] {
+    input[type="text"], input[type="url"] {
       width: 100%; padding: 0.75rem 1rem; border-radius: 10px;
       border: 1px solid var(--border); background: var(--surface2);
       color: var(--text); font-family: 'DM Sans', sans-serif;
       font-size: 0.9rem; outline: none; transition: border-color 0.2s;
     }
-    input[type="text"]:focus { border-color: var(--accent); }
-
+    input:focus { border-color: var(--accent); }
     .btn-primary {
       width: 100%; padding: 0.85rem; border-radius: 10px; border: none;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -119,7 +73,6 @@
       font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s;
     }
     .btn-primary:hover { opacity: 0.85; }
-
     .your-id-box {
       background: var(--surface2); border: 1px dashed var(--border);
       border-radius: 10px; padding: 0.75rem 1rem;
@@ -127,102 +80,65 @@
     }
     .your-id-box strong { color: var(--accent); letter-spacing: 0.05em; }
 
-    /* MAIN APP */
+    /* how-to steps */
+    .steps { display: flex; flex-direction: column; gap: 0.6rem; }
+    .step {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      background: var(--surface2); border-radius: 10px; padding: 0.7rem 0.9rem;
+      font-size: 0.84rem; color: var(--text);
+    }
+    .step-num {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border-radius: 50%; width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* APP */
     #app { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .app-body { display: flex; flex: 1; overflow: hidden; height: calc(100vh - 57px); }
 
-    /* VIDEO SIDE */
-    .video-side {
-      flex: 1; display: flex; flex-direction: column;
-      background: #000; position: relative; min-width: 0;
-    }
+    .video-side { flex: 1; display: flex; flex-direction: column; background: #000; min-width: 0; }
     #video-container {
       flex: 1; position: relative;
-      display: flex; align-items: center; justify-content: center;
-      background: #000; overflow: hidden;
-    }
-    video {
-      max-width: 100%; max-height: 100%; width: 100%;
-      object-fit: contain; display: block;
+      display: flex; align-items: center; justify-content: center; background: #000;
     }
     #video-placeholder {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 1rem; color: var(--muted);
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem; color: var(--muted);
     }
     #video-placeholder .big-icon { font-size: 3rem; }
-    #video-placeholder p { font-size: 0.9rem; }
+    #video-placeholder p { font-size: 0.9rem; text-align: center; padding: 0 1rem; }
 
-    /* CONTROLS BAR */
+    iframe#drive-player {
+      width: 100%; height: 100%; border: none; display: none;
+    }
+
+    /* CONTROLS */
     .controls-bar {
-      padding: 0.6rem 1rem;
-      background: var(--surface);
+      padding: 0.6rem 1rem; background: var(--surface);
       border-top: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      gap: 0.5rem;
-      flex-shrink: 0;
+      display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0;
     }
+    .timeline-row { display: flex; align-items: center; gap: 0.6rem; width: 100%; }
+    .time-label { font-size: 0.75rem; color: var(--muted); white-space: nowrap; min-width: 40px; font-variant-numeric: tabular-nums; }
 
-    /* TIMELINE */
-    .timeline-row {
-      display: flex; align-items: center; gap: 0.6rem;
-      width: 100%;
-    }
-    .time-label {
-      font-size: 0.75rem; color: var(--muted);
-      white-space: nowrap; min-width: 80px;
-      font-variant-numeric: tabular-nums;
-    }
-    #seek-bar {
-      flex: 1;
-      -webkit-appearance: none;
-      appearance: none;
-      height: 5px;
-      border-radius: 4px;
-      background: var(--border);
-      outline: none;
-      cursor: pointer;
-      accent-color: var(--accent);
-    }
-    #seek-bar::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      box-shadow: 0 0 4px var(--accent);
-    }
-    #seek-bar::-moz-range-thumb {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      border: none;
-    }
-
-    /* BUTTONS ROW */
-    .btns-row {
-      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
-    }
+    /* sync controls row */
+    .btns-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .ctrl-btn {
       padding: 0.45rem 0.9rem; border-radius: 8px;
       border: 1px solid var(--border); background: var(--surface2);
       color: var(--text); font-size: 0.82rem; cursor: pointer;
-      transition: all 0.15s; white-space: nowrap;
-      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s; white-space: nowrap; font-family: 'DM Sans', sans-serif;
     }
     .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
     .ctrl-btn.accent { background: linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border-color: transparent; }
-
     .guest-label { font-size: 0.82rem; color: var(--muted); }
 
-    /* CHAT SIDE */
+    /* CHAT */
     .chat-side {
-      width: 290px; min-width: 240px;
-      border-left: 1px solid var(--border);
-      background: var(--surface); display: flex; flex-direction: column;
-      flex-shrink: 0;
+      width: 290px; min-width: 240px; border-left: 1px solid var(--border);
+      background: var(--surface); display: flex; flex-direction: column; flex-shrink: 0;
     }
     .chat-header {
       padding: 0.85rem 1.2rem; border-bottom: 1px solid var(--border);
@@ -234,19 +150,11 @@
       display: flex; flex-direction: column; gap: 0.7rem;
       scrollbar-width: thin; scrollbar-color: var(--border) transparent;
     }
-    .msg {
-      max-width: 85%; padding: 0.55rem 0.85rem;
-      border-radius: 14px; font-size: 0.88rem;
-      line-height: 1.5; word-break: break-word;
-    }
-    .msg.me   { align-self: flex-end; background: linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border-bottom-right-radius:4px; }
-    .msg.them { align-self: flex-start; background: var(--surface2); color: var(--text); border-bottom-left-radius:4px; }
-    .msg.system { align-self: center; background: none; color: var(--muted); font-size: 0.76rem; font-style: italic; }
-
-    .chat-input-area {
-      padding: 0.75rem; border-top: 1px solid var(--border);
-      display: flex; gap: 0.5rem; flex-shrink: 0;
-    }
+    .msg { max-width: 85%; padding: 0.55rem 0.85rem; border-radius: 14px; font-size: 0.88rem; line-height: 1.5; word-break: break-word; }
+    .msg.me     { align-self: flex-end; background: linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border-bottom-right-radius:4px; }
+    .msg.them   { align-self: flex-start; background: var(--surface2); color: var(--text); border-bottom-left-radius:4px; }
+    .msg.system { align-self: center; background: none; color: var(--muted); font-size: 0.76rem; font-style: italic; text-align: center; }
+    .chat-input-area { padding: 0.75rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; flex-shrink: 0; }
     .chat-input-area input { flex: 1; padding: 0.6rem 0.85rem; }
     .send-btn {
       padding: 0.6rem 1rem; border-radius: 10px; border: none;
@@ -257,18 +165,22 @@
 
     .hidden { display: none !important; }
 
-    /* FULLSCREEN tweaks */
-    #video-container:fullscreen video,
-    #video-container:-webkit-full-screen video,
-    #video-container:-moz-full-screen video {
-      width: 100vw; height: 100vh; max-height: 100vh; object-fit: contain;
+    /* load video bar */
+    #load-bar {
+      display: none; padding: 0.5rem 1rem; background: var(--surface);
+      border-bottom: 1px solid var(--border); gap: 0.5rem; align-items: center; flex-shrink: 0;
+    }
+    #load-bar input { flex: 1; }
+    #load-bar button {
+      padding: 0.5rem 1rem; border-radius: 8px; border: none;
+      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#fff; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.85rem; white-space:nowrap;
     }
 
-    /* RESPONSIVE */
     @media (max-width: 640px) {
       .app-body { flex-direction: column; height: auto; min-height: calc(100vh - 57px); }
-      .chat-side { width: 100%; min-width: unset; border-left: none; border-top: 1px solid var(--border); height: 280px; }
-      .video-side { height: 55vw; min-height: 220px; flex-shrink: 0; }
+      .chat-side { width: 100%; min-width: unset; border-left: none; border-top: 1px solid var(--border); height: 260px; }
+      .video-side { height: 56vw; min-height: 200px; flex-shrink: 0; }
     }
   </style>
 </head>
@@ -286,12 +198,12 @@
 <div id="setup">
   <div class="setup-card" id="role-pick">
     <h2>who are you? 💜</h2>
-    <p>The one sharing the video picks <strong>Host</strong>. The one watching picks <strong>Guest</strong>.</p>
+    <p>The one who has the Google Drive video link picks <strong>Host</strong>. The one watching picks <strong>Guest</strong>.</p>
     <div class="role-btns">
       <button class="role-btn" onclick="pickRole('host')">
         <span class="role-icon">🎬</span>
         <span class="role-label">Host</span>
-        <span class="role-sub">I'm sharing the video</span>
+        <span class="role-sub">I have the Drive link</span>
       </button>
       <button class="role-btn" onclick="pickRole('guest')">
         <span class="role-icon">🍿</span>
@@ -301,16 +213,23 @@
     </div>
   </div>
 
+  <!-- HOST -->
   <div class="setup-card hidden" id="host-setup">
     <h2>host setup 🎬</h2>
-    <p>Share your ID with her so she can join.</p>
+    <p>First, make sure your video is shared correctly on Google Drive:</p>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span>Open Google Drive → right-click your video → <strong>Share</strong></div>
+      <div class="step"><span class="step-num">2</span>Change access to <strong>"Anyone with the link"</strong> → Copy link</div>
+      <div class="step"><span class="step-num">3</span>Paste that link below 👇</div>
+    </div>
+    <input type="url" id="drive-url-input" placeholder="Paste Google Drive link here…" />
     <div class="your-id-box">Your ID: <strong id="my-peer-id">generating…</strong></div>
-    <p>Once she connects, pick your video file below.</p>
-    <input type="file" id="file-input" accept="video/*" style="display:none" onchange="fileChosen(this)"/>
-    <button class="btn-primary" onclick="document.getElementById('file-input').click()">📂 Choose video file</button>
-    <p id="file-name" style="color:var(--muted);font-size:0.8rem;"></p>
+    <p style="font-size:0.8rem">Share your ID with her so she can join, then click Start.</p>
+    <button class="btn-primary" onclick="hostStart()">🚀 Start watching</button>
+    <p id="host-error" style="color:#f87171;font-size:0.8rem;display:none"></p>
   </div>
 
+  <!-- GUEST -->
   <div class="setup-card hidden" id="guest-setup">
     <h2>guest setup 🍿</h2>
     <p>Ask your host for their ID and paste it below.</p>
@@ -322,46 +241,38 @@
 
 <!-- MAIN APP -->
 <div id="app">
-  <div class="app-body">
+  <!-- load bar (host only, shown after setup) -->
+  <div id="load-bar">
+    <input type="url" id="drive-url-change" placeholder="Paste a new Google Drive link to change video…" />
+    <button onclick="changeVideo()">Load</button>
+  </div>
 
+  <div class="app-body">
     <div class="video-side">
       <div id="video-container">
         <div id="video-placeholder">
           <span class="big-icon">🎬</span>
-          <p>Waiting for video…</p>
+          <p id="placeholder-text">Loading video…</p>
         </div>
-        <video id="main-video" playsinline></video>
+        <iframe id="drive-player" allowfullscreen allow="autoplay; fullscreen"></iframe>
       </div>
 
       <!-- HOST CONTROLS -->
       <div class="controls-bar" id="host-controls" style="display:none">
-        <!-- Timeline -->
-        <div class="timeline-row">
-          <span class="time-label" id="time-current">0:00</span>
-          <input type="range" id="seek-bar" min="0" max="100" step="0.1" value="0"
-            oninput="onSeekInput(this)" onchange="onSeekCommit(this)" />
-          <span class="time-label" style="text-align:right" id="time-total">0:00</span>
-        </div>
-        <!-- Buttons -->
         <div class="btns-row">
-          <button class="ctrl-btn accent" onclick="togglePlay()" id="play-btn">▶ Play</button>
-          <button class="ctrl-btn" onclick="skip(-10)">⏪ -10s</button>
-          <button class="ctrl-btn" onclick="skip(10)">+10s ⏩</button>
-          <button class="ctrl-btn" onclick="syncNow()">🔁 Sync her</button>
-          <button class="ctrl-btn" onclick="goFullscreen()" style="margin-left:auto">⛶ Fullscreen</button>
+          <span style="font-size:0.8rem;color:var(--muted)">🎬 You're the host · Google Drive player</span>
+          <button class="ctrl-btn" onclick="sendSyncSignal()" style="margin-left:auto">🔁 Sync her</button>
+          <button class="ctrl-btn" onclick="goFullscreen()">⛶ Fullscreen</button>
+        </div>
+        <div class="btns-row" style="font-size:0.76rem;color:var(--muted)">
+          ℹ️ Play/pause inside the video player — use "Sync her" if she falls behind
         </div>
       </div>
 
       <!-- GUEST CONTROLS -->
       <div class="controls-bar" id="guest-controls" style="display:none">
-        <div class="timeline-row">
-          <span class="time-label" id="guest-time-current">0:00</span>
-          <input type="range" id="guest-seek-bar" min="0" max="100" step="0.1" value="0" disabled
-            style="flex:1; -webkit-appearance:none; appearance:none; height:5px; border-radius:4px; background:var(--border); outline:none; accent-color:var(--accent);" />
-          <span class="time-label" style="text-align:right" id="guest-time-total">0:00</span>
-        </div>
         <div class="btns-row">
-          <span class="guest-label">🍿 Host controls playback</span>
+          <span class="guest-label">🍿 Watching · follow the host's lead</span>
           <button class="ctrl-btn" onclick="goFullscreen()" style="margin-left:auto">⛶ Fullscreen</button>
         </div>
       </div>
@@ -375,31 +286,20 @@
         <button class="send-btn" onclick="sendChat()">➤</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <script>
-let peer, conn, mediaConn;
+let peer, conn;
 let role = null;
-let videoStream = null;
-let isSeeking = false;
-
 const $ = id => document.getElementById(id);
 
-// ── FORMAT TIME ──
-function fmt(s) {
-  if (isNaN(s)) return '0:00';
-  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-  return m + ':' + String(sec).padStart(2, '0');
-}
-
-// ── ROLE PICK ──
+// ── ROLE ──
 function pickRole(r) {
   role = r;
   $('role-pick').classList.add('hidden');
-  if (r === 'host') { $('host-setup').classList.remove('hidden'); }
-  else              { $('guest-setup').classList.remove('hidden'); }
+  $('host-setup').classList.toggle('hidden', r !== 'host');
+  $('guest-setup').classList.toggle('hidden', r !== 'guest');
   initPeer();
 }
 
@@ -408,26 +308,61 @@ function initPeer() {
   peer = new Peer(undefined, { debug: 0 });
   peer.on('open', id => {
     $('my-peer-id').textContent = id;
-    setStatus('calling', 'waiting for connection…');
+    setStatus('calling', 'waiting…');
   });
   if (role === 'host') {
-    peer.on('connection', c => { conn = c; setupDataConn(); });
-  }
-  if (role === 'guest') {
-    peer.on('call', call => {
-      mediaConn = call;
-      call.answer();
-      call.on('stream', remoteStream => {
-        showApp();
-        const vid = $('main-video');
-        vid.srcObject = remoteStream;
-        $('video-placeholder').style.display = 'none';
-        startGuestTimeline(vid);
-        addSysMsg('🎬 Video connected! Enjoy 🍿');
-      });
+    peer.on('connection', c => {
+      conn = c; setupDataConn();
     });
   }
-  peer.on('error', e => { setStatus('', 'error – try refreshing'); console.error(e); });
+  peer.on('error', e => { setStatus('', 'error – refresh'); console.error(e); });
+}
+
+// ── DRIVE URL HELPERS ──
+function extractDriveId(url) {
+  // handles /file/d/ID/view and ?id=ID formats
+  let m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m) return m[1];
+  m = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m) return m[1];
+  return null;
+}
+
+function driveEmbedUrl(id) {
+  return `https://drive.google.com/file/d/${id}/preview`;
+}
+
+// ── HOST START ──
+function hostStart() {
+  const url = $('drive-url-input').value.trim();
+  const id = extractDriveId(url);
+  if (!id) {
+    $('host-error').style.display = 'block';
+    $('host-error').textContent = "❌ Couldn't read that link. Make sure it's a Google Drive share link.";
+    return;
+  }
+  $('host-error').style.display = 'none';
+  showApp();
+  loadVideo(id);
+  addSysMsg('🎬 Video loaded! Share your ID with her to connect.');
+}
+
+function loadVideo(driveId) {
+  const player = $('drive-player');
+  player.src = driveEmbedUrl(driveId);
+  player.style.display = 'block';
+  $('video-placeholder').style.display = 'none';
+  // send to guest if connected
+  send({ type: 'load', driveId });
+}
+
+function changeVideo() {
+  const url = $('drive-url-change').value.trim();
+  const id = extractDriveId(url);
+  if (!id) { alert("Couldn't read that Drive link."); return; }
+  loadVideo(id);
+  $('drive-url-change').value = '';
+  addSysMsg('📽️ Video changed!');
 }
 
 // ── GUEST CONNECT ──
@@ -441,7 +376,7 @@ function guestConnect() {
     $('guest-status').textContent = 'Connected! Waiting for video…';
     setStatus('calling', 'waiting for video…');
     showApp();
-    addSysMsg('💜 Connected! Waiting for host to start the video…');
+    addSysMsg('💜 Connected! Waiting for host to load the video…');
   });
 }
 
@@ -452,125 +387,49 @@ function setupDataConn() {
     if (role === 'host') {
       setStatus('connected', "she's here 💜");
       showApp();
-      addSysMsg("💜 She connected! Pick your video file if you haven't yet.");
-      if (videoStream) callGuest();
+      addSysMsg("💜 She connected!");
+      // send current video if already loaded
+      const src = $('drive-player').src;
+      if (src) {
+        const m = src.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (m) send({ type: 'load', driveId: m[1] });
+      }
     }
     if (role === 'guest') { setStatus('connected', 'connected 💜'); }
   });
   conn.on('data', data => {
-    const vid = $('main-video');
     if (data.type === 'chat') { appendMsg(data.text, 'them'); }
-    if (data.type === 'play')  { vid.currentTime = data.time; vid.play();  updatePlayBtn(false); }
-    if (data.type === 'pause') { vid.currentTime = data.time; vid.pause(); updatePlayBtn(true); }
-    if (data.type === 'sync')  { vid.currentTime = data.time; addSysMsg('🔁 Synced to host'); }
-    if (data.type === 'seek')  { vid.currentTime = data.time; }
+    if (data.type === 'load') {
+      const player = $('drive-player');
+      player.src = driveEmbedUrl(data.driveId);
+      player.style.display = 'block';
+      $('video-placeholder').style.display = 'none';
+      addSysMsg('🎬 Video loaded! Press play when host does.');
+    }
+    if (data.type === 'sync') {
+      addSysMsg('🔁 Host says: press play now! ▶');
+    }
   });
   conn.on('close', () => { setStatus('', 'disconnected'); addSysMsg('❌ Connection lost. Try refreshing.'); });
 }
 
-// ── FILE CHOSEN ──
-function fileChosen(input) {
-  const file = input.files[0];
-  if (!file) return;
-  $('file-name').textContent = '📄 ' + file.name;
-  const vid = $('main-video');
-  vid.src = URL.createObjectURL(file);
-  $('video-placeholder').style.display = 'none';
-  videoStream = vid.captureStream ? vid.captureStream(30) : vid.mozCaptureStream(30);
-  startHostTimeline(vid);
-  if (conn && conn.open) callGuest();
-  else addSysMsg('Video loaded! Waiting for her to connect…');
+// ── SYNC SIGNAL ──
+function sendSyncSignal() {
+  send({ type: 'sync' });
+  addSysMsg('🔁 Sync signal sent to her!');
 }
 
-function callGuest() {
-  if (!videoStream || !conn || !conn.peer) return;
-  mediaConn = peer.call(conn.peer, videoStream);
-  addSysMsg('📡 Streaming video to her…');
-}
-
-// ── TIMELINE (HOST) ──
-function startHostTimeline(vid) {
-  vid.addEventListener('loadedmetadata', () => {
-    $('seek-bar').max = vid.duration;
-    $('time-total').textContent = fmt(vid.duration);
-  });
-  vid.addEventListener('timeupdate', () => {
-    if (isSeeking) return;
-    $('seek-bar').value = vid.currentTime;
-    $('time-current').textContent = fmt(vid.currentTime);
-  });
-}
-
-function onSeekInput(bar) {
-  isSeeking = true;
-  $('time-current').textContent = fmt(parseFloat(bar.value));
-}
-
-function onSeekCommit(bar) {
-  const t = parseFloat(bar.value);
-  $('main-video').currentTime = t;
-  send({ type: 'seek', time: t });
-  isSeeking = false;
-}
-
-// ── TIMELINE (GUEST) ──
-function startGuestTimeline(vid) {
-  const bar = $('guest-seek-bar');
-  vid.addEventListener('loadedmetadata', () => {
-    bar.max = vid.duration;
-    $('guest-time-total').textContent = fmt(vid.duration);
-  });
-  vid.addEventListener('timeupdate', () => {
-    bar.value = vid.currentTime;
-    $('guest-time-current').textContent = fmt(vid.currentTime);
-  });
-}
-
-// ── PLAYBACK ──
-function togglePlay() {
-  const vid = $('main-video');
-  if (vid.paused) {
-    vid.play();
-    send({ type: 'play', time: vid.currentTime });
-    updatePlayBtn(false);
-  } else {
-    vid.pause();
-    send({ type: 'pause', time: vid.currentTime });
-    updatePlayBtn(true);
-  }
-}
-
-function updatePlayBtn(paused) {
-  const btn = $('play-btn');
-  if (btn) btn.textContent = paused ? '▶ Play' : '⏸ Pause';
-}
-
-function skip(secs) {
-  const vid = $('main-video');
-  vid.currentTime = Math.max(0, Math.min(vid.duration || 0, vid.currentTime + secs));
-  send({ type: 'seek', time: vid.currentTime });
-}
-
-function syncNow() {
-  const vid = $('main-video');
-  send({ type: 'sync', time: vid.currentTime });
-  addSysMsg('🔁 Synced her to your position');
-}
-
-// ── FULLSCREEN (works on both desktop & mobile) ──
+// ── FULLSCREEN ──
 function goFullscreen() {
   const el = $('video-container');
   const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
   if (req) {
     req.call(el);
-    // Lock to landscape on mobile if supported
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock('landscape').catch(() => {});
     }
   }
 }
-
-// Exit fullscreen restores orientation
 document.addEventListener('fullscreenchange', () => {
   if (!document.fullscreenElement && screen.orientation && screen.orientation.unlock) {
     screen.orientation.unlock();
@@ -607,8 +466,12 @@ function setStatus(state, text) { $('status-dot').className = state; $('status-t
 function showApp() {
   $('setup').style.display = 'none';
   $('app').style.display = 'flex';
-  $('host-controls').style.display = role === 'host' ? 'flex' : 'none';
-  $('guest-controls').style.display = role === 'guest' ? 'flex' : 'none';
+  if (role === 'host') {
+    $('host-controls').style.display = 'flex';
+    $('load-bar').style.display = 'flex';
+  } else {
+    $('guest-controls').style.display = 'flex';
+  }
 }
 </script>
 </body>
